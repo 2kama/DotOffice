@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+
+
+  </head>
+  <body>
+
+
+
+
+      <header>
+          <div class="open_drawer_panel"><i class="material-icons">menu</i></div>
+          <div class="open_message"><span class="sup">0</span><i class="material-icons">email</i></div>
+      </header>
+
+      
+
+      <div class="drawer">
+          <i class="material-icons ex">close</i>
+          <div class="profileName"></div>
+
+          <div class="menu">
+              <div class="tab"><a href="home.html">Dashboard</a></div>
+              <div class="tab"><a href="timesheet.html">TimeSheets</a></div>
+              <div class="tab"><a href="jobs.html">Jobs</a></div>
+              <div class="tab"><a href="payroll.html">PayRoll</a></div>
+              <div class="tab"><a href="updatepassword.html">Update Password</a></div>
+              <div class="tab logout"><a href="">Logout</a></div>
+          </div>
+      </div>
+
+
+
+      
+
+
+
+      <section class="welcomeScreen">
+
+          <div class="loginPanel" style="display: block;">
+              <span> SEND MESSAGE</span>
+              <div class="loginFloat">
+                 
+                  <textarea class="message" placeholder="Type in message to admin"></textarea>
+                  <button class="loginBtn">SEND</button>
+                  <div class="errorMsg"></div>
+                  <div class="successMsg"></div>
+              </div>
+
+          </div>
+      </section>
+
+
+      <script type="text/javascript" src="js/activity.js"></script>
+      <script type="text/javascript" src="js/smug.js"></script>
+      <script type="text/javascript" src="js/background.js"></script>
+
+  </body>
+
+
+  
+
+  <script type="text/javascript">
+      $(document).ready(function() {
+          if(localStorage.dotUserID == null || localStorage.dotUserID == "" || localStorage.dotUserID == undefined) {
+               setTimeout("location.href = 'index.html';", 1000);
+          }
+          else {
+             
+          }
+
+
+    
+   
+
+      $('.loginBtn').click(function() {
+
+          var token = localStorage.userToken
+          var message = $('.message').val();
+          var user_id = localStorage.dotUserID;
+          if(token != "" && message != "") {
+
+                
+
+               $('.loginBtn').html("...");
+         
+
+              $.ajax({
+                  url: 'http://dotgroupltd.com/dot/v1/message/user/send?token=' + localStorage.userToken,
+                  type: 'post',
+                  data: {
+                  
+                      message: message,
+                      user_id: 1
+                  },
+                  headers: {
+                      device: "app",   //If your header name has spaces or any other char not appropriate
+                  },
+                  dataType: 'json',
+                  success: function (data) {
+                      console.log(data);
+
+                      if(data.status == "ok") {
+                          $('.successMsg').html("Your message has been sent").show();
+                          $('.message').val("");
+
+                          setTimeout(function() {
+                              $('.successMsg').hide();
+                          }, 4000);
+                        }
+
+                        else {
+                           $('.errorMsg').html(data.error.msg).show();
+
+                           setTimeout(function() {
+                              $('.errorMsg').hide();
+                           }, 3000);
+                        }
+
+                      $('.loginBtn').html("SEND");
+                  }
+              });
+
+
+          }
+          else {}
+
+      });
+
+
+    });
+  </script>
+
+
+
+  <style type="text/css">
+     
+
+  </style>
+</html>
+
+

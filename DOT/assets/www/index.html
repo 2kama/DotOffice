@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+
+
+  </head>
+  <body>
+
+
+      <style type="text/css">
+      
+      
+
+  </style>
+
+
+
+      <section class="welcomeScreen">
+          <div class="welcome">
+              
+          </div>
+
+          <div class="loginPanel">
+
+              <span>LOGIN INTO ACCOUNT</span>
+              
+              <div class="loginFloat">
+                  <input type="text" class="user" placeholder="Username / Email" name="" />
+                  <input type="password" class="pass" placeholder="Password" name="" />
+                  <sup><a href="forgotpassword.html">Forgot Password?</a></sup>
+                  <button class="loginBtn">LOGIN</button>
+                  <div class="errorMsg"></div>
+              </div>
+
+          </div>
+      </section>
+
+
+      <script type="text/javascript" src="js/activity.js"></script>
+
+  </body>
+
+
+  
+
+  <script type="text/javascript">
+      $(document).ready(function() {
+
+
+          if(localStorage.dotUserID == null || localStorage.dotUserID == "" || localStorage.dotUserID == undefined) {
+              
+          }
+          else {
+              setTimeout("location.href = 'home.html';", 1000);
+          }
+
+
+
+          if(localStorage.msgcount == null || localStorage.msgcount == "" || localStorage.msgcount == undefined) {
+                localStorage.msgcount = 0;   
+          }
+          else {
+              localStorage.msgcount = localStorage.msgcount;
+          }
+      
+
+
+
+      setTimeout(function() {
+          $('.welcome').fadeOut();
+          $('.loginPanel').fadeIn();
+      }, 1500);
+
+
+
+
+      $('.loginBtn').click(function() {
+
+          var user = $('.user').val();
+          var pass = $('.pass').val();
+
+          if(user != "" && pass != "") {
+
+              $('.loginBtn').html("LOGGING IN...");
+         
+
+              $.ajax({
+                  url: 'http://dotgroupltd.com/dot/v1/login',
+                  type: 'post',
+                  data: {
+                      login: user,
+                      password : pass
+                  },
+                  headers: {
+                      device: "app",   //If your header name has spaces or any other char not appropriate
+                  },
+                  dataType: 'json',
+                  success: function (data) {
+                      console.log(data);
+
+                      if(data.status == "ok") {
+                          localStorage.userToken = data.data.Token;
+                          localStorage.dotUserID = data.data.User.id;
+                          localStorage.dotUserName = data.data.User.full_name;
+
+                          setTimeout("location.href = 'home.html';", 1000);
+
+                      }
+                      else {
+                          $('.errorMsg').html(data.error.msg).show();
+
+                          setTimeout(function() {
+                              $('.errorMsg').hide()
+                          }, 3000);
+                      }
+
+                      $('.loginBtn').html("LOGIN");
+                  }
+              });
+
+
+          }
+          else {}
+
+      });
+
+
+
+      });
+  </script>
+
+
+
+
+</html>
+
+

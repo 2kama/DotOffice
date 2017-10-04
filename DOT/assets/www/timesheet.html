@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+
+
+  </head>
+  <body>
+
+    <div class="loading">
+         <div class="loader"></div>
+      </div>
+
+
+      <header>
+          <div class="open_drawer_panel"><i class="material-icons">menu</i></div>
+          <div class="open_message"><span class="sup">0</span><i class="material-icons">email</i></div>
+      </header>
+
+      
+
+      <div class="drawer">
+          <i class="material-icons ex">close</i>
+          <div class="profileName"></div>
+
+          <div class="menu">
+              <div class="tab"><a href="home.html">Dashboard</a></div>
+              <div class="tab"><a href="timesheet.html">TimeSheets</a></div>
+              <div class="tab"><a href="jobs.html">Jobs</a></div>
+              <div class="tab"><a href="payroll.html">PayRoll</a></div>
+              <div class="tab"><a href="updatepassword.html">Update Password</a></div>
+              <div class="tab logout"><a href="">Logout</a></div>
+          </div>
+      </div>
+
+
+
+      <div class="moon">
+         <i class="material-icons qu">close</i>
+         <span class="topic">TimeSheet Detail</span>
+         <div class="spy">
+           
+         </div>
+         <button style='background:red;margin-top:20px;' class='loginBtn decline'>DELETE</button>
+      </div>
+
+
+
+      
+<div class="star">
+         <i class="material-icons pi">close</i>
+
+         <div class='spy1'>
+           <div class="loginFloat">
+              <select class="jobtitle">
+                  <option>Pick a Job</option>
+              </select>
+             <input type="text" class="date" placeholder="Date (YYYY/MM/DD)" />
+             <input type="text" class="time_in" placeholder="Time In (7:00 AM)" />
+             <input type="text" class="time_out" placeholder="Time Out (4:00 PM)" />
+             <label style="width: 100%;float: left;margin-bottom: 5px;font-weight: bold;">Breaks (HH/MIN)</label>
+             <input type="number" class="break_hrs" style="width: 45%;margin-right: 6%;" placeholder="HH" />
+             <input type="number" class="break_mins" style="width:45%" placeholder="MIN" />
+              
+              <label style="width: 100%;float: left;margin-top:20px;margin-bottom: 5px;font-weight: bold;">Aprroval Details</label>
+              <input type="email" class="cEmail" placeholder="company Email" />
+              <input type="email" class="eEmail" placeholder="Supervisor Email" />
+              <input type="text" class="cName" placeholder="company Name" />
+              <input type="text" class="eName" placeholder="Supervisor Name" />
+              <input type="text" class="ePosition" placeholder="Supervisor Position" />
+
+
+
+
+           </div>
+            
+         </div>
+
+         <button style='background:green;margin-top:20px;' class='loginBtn accept'>SUBMIT TIMESHEET</button>
+      </div>
+
+
+
+      
+
+
+
+      <section class="lit">
+        <div class="loginFloat">
+           <select class="month" style="width:35%;">
+              <option value="Jan">Jan</option>
+              <option value="Feb">Feb</option>
+              <option value="Mar">Mar</option>
+              <option value="Apr">Apr</option>
+              <option value="May">May</option>
+              <option value="Jun">Jun</option>
+              <option value="Jul">Jul</option>
+              <option value="Aug">Aug</option>
+              <option value="Sep">Sep</option>
+              <option value="Oct">Oct</option>
+              <option value="Nov">Nov</option>
+              <option value="Dec">Dec</option>
+           </select>
+
+           <select class="year" style="width: 40%;">
+              <option value="2017">2017</option>
+              <option value="2018">2018</option>
+              <option value="2019">2019</option>
+              <option value="2020">2020</option>
+           </select>
+
+           <button style='background:green;width: 20%;' class='loginBtn go'><i class="material-icons">send</i></button>
+        </div>
+        <span class="topic">Weekly TimeSheet</span>
+
+
+
+      </section>
+
+
+      <button class="float addjob"><i class="material-icons">note_add</i></button>
+
+
+      <script type="text/javascript" src="js/activity.js"></script>
+      <script type="text/javascript" src="js/smug.js"></script>
+      <script type="text/javascript" src="js/background.js"></script>
+
+  </body>
+
+
+  
+
+  <script type="text/javascript">
+      $(document).ready(function() {
+          if(localStorage.dotUserID == null || localStorage.dotUserID == "" || localStorage.dotUserID == undefined) {
+               setTimeout("location.href = 'index.html';", 1000);
+          }
+          else {
+             
+          }
+
+
+          $('.addjob').click(function() {
+
+              $('.star').fadeIn();
+          });
+
+
+          $('.qu').click(function() {
+              $('.moon .spy').html("");
+              $('.decline').show();
+          });
+
+
+
+
+
+
+          $.ajax({
+                  url: 'http://dotgroupltd.com/dot/v1/timesheets?token=' + localStorage.userToken,
+                  type: 'get',
+                  data: {
+                      
+                  },
+                  headers: {
+                      device: "app",   //If your header name has spaces or any other char not appropriate
+                  },
+                  dataType: 'json',
+                  success: function (data) {
+                      console.log(data);
+
+                      if(data.status == "ok") {
+                          $('.loading').fadeOut();
+
+
+                          $.each(data.data.worksheets, function (i, item) {
+
+                            $('.lit').append("<div class='job jobber" + item.id + "'><div class='jobTitle'>" + item.cName + "</div><div class='jobDetails job" + item.id + "'><i class='material-icons'>visibility</i></div><sup>by " +  item.date + "</sup></div>");
+
+                               $('.loading').fadeOut();
+
+                               $('.job' + item.id).click(function() {
+                                  $('.moon').fadeIn();
+                                  localStorage.timesheetid = item.id;
+
+                                  
+                                  $('.moon .spy').append("<div class='top'>Company Name</div><div class='deli'>" + item.cName + "</div>");
+                                  $('.moon .spy').append("<div class='top'>Employer</div><div class='deli'>" + item.eName + "</div>");
+                                  $('.moon .spy').append("<div class='top'>Date</div><div class='deli'>" + item.date + "</div>");
+                                  $('.moon .spy').append("<div class='top'>Work Time</div><div class='deli'>" + item.time_in + " - " + item.time_out + "</div>");
+                                  $('.moon .spy').append("<div class='top'>Breaks</div><div class='deli'>" + item.break + " mins</div>");
+                                  $('.moon .spy').append("<div class='top'>Hours Worked</div><div class='deli'>" + item.hours_worked + "</div>");
+                                  $('.moon .spy').append("<div class='top'>Status</div><div class='deli'>" + item.status + "</div>");
+                                  
+                                  
+                               });
+
+
+                              });
+
+
+                      }
+
+                      
+                  }
+              });
+
+
+
+          $('.go').click(function() {
+
+                            var month = $('.month').val();
+                            var year = $('.year').val();
+                            $('.decline').hide();
+                             $('.moon').fadeIn();
+                            $('.moon .spy').html("<span class='topic' style='font-size:14px;'>" + month + " " + year + "</span> <div class='tail' style='background:#444;color:#fff;border-right:2px solid #fff;'><div class='bin' style='border-bottom: 2px solid #fff;'>WK</div><div class='bin' style='border-bottom: 2px solid #fff;'>Su</div><div class='bin' style='border-bottom: 2px solid #fff;'>Mo</div><div class='bin' style='border-bottom: 2px solid #fff;'>Tu</div><div class='bin' style='border-bottom: 2px solid #fff;'>We</div><div class='bin' style='border-bottom: 2px solid #fff;'>Th</div><div class='bin' style='border-bottom: 2px solid #fff;'>Fr</div><div class='bin' style='border-bottom: 2px solid #fff;'>Sa</div><div class='bin' style='border-bottom: 2px solid #fff;'>&Sigma;</div></div>");
+
+                                    $.ajax({
+                                        url: 'http://dotgroupltd.com/dot/v1/timesheet/archive?token=' + localStorage.userToken,
+                                        type: 'get',
+                                        data: {
+                                            month: month,
+                                            year: year
+                                        },
+                                        headers: {
+                                            device: "app",   //If your header name has spaces or any other char not appropriate
+                                        },
+                                        dataType: 'json',
+
+                                        success: function(datas) {
+                                            if(datas.status == "ok") {
+                                               
+                                                
+                                                console.log(datas);
+
+
+
+                                                $.each(datas.data.weeks, function(i, item) {
+                                                    if(item.sun == null) {
+                                                        item.sun = "&nbsp;";
+                                                    }
+                                                    else {
+                                                       item.sun = item.sun.hours_worked;
+                                                    }
+                                                    if(item.mon == null) {
+                                                        item.mon = "&nbsp;";
+                                                    }
+                                                    else {
+                                                       item.mon = item.mon.hours_worked;
+                                                    }
+                                                    if(item.tue == null) {
+                                                        item.tue = "&nbsp;";
+                                                    }
+                                                    else {
+                                                       item.tue = item.tue.hours_worked;
+                                                    }
+                                                    if(item.wed == null) {
+                                                        item.wed = "&nbsp;";
+                                                    }
+                                                    else {
+                                                       item.wed = item.wed.hours_worked;
+                                                    }
+                                                    if(item.thur == null) {
+                                                        item.thur = "&nbsp;";
+                                                    }
+                                                    else {
+                                                       item.thur = item.thur.hours_worked;
+                                                    }
+                                                    if(item.fri == null) {
+                                                        item.fri = "&nbsp;";
+                                                    }
+                                                    else {
+                                                       item.fri = item.fri.hours_worked;
+                                                    }
+                                                    if(item.sat == null) {
+                                                        item.sat = "&nbsp;";
+                                                    }
+                                                    else {
+                                                       item.sat = item.sat.hours_worked;
+                                                    }
+                                                    if(item.total == "") {
+                                                        item.total = "0";
+                                                    }
+
+
+
+                                                    $('.moon .spy').append("<div class='tail'><div class='bin'>"+ i + "</div><div class='bin'>"+item.sun+"</div><div class='bin'>"+item.mon+"</div><div class='bin'>"+item.tue+"</div><div class='bin'>"+item.wed+"</div><div class='bin'>"+item.thur+"</div><div class='bin'>"+item.fri+"</div><div class='bin'>"+item.sat+"</div><div class='bin'>"+item.total+"</div></div>");
+                                                });
+                                            }
+
+                                            else {}
+                                        }
+
+
+                                    });
+                               });
+
+
+
+
+            $('.decline').click(function() {
+
+                                    $(this).html("...");
+
+
+                                    $.ajax({
+                                        url: 'http://dotgroupltd.com/dot/v1/timesheet/delete/' + localStorage.timesheetid + '?token=' + localStorage.userToken,
+                                        type: 'get',
+                                        data: {
+                                            
+                                        },
+                                        headers: {
+                                            device: "app",   //If your header name has spaces or any other char not appropriate
+                                        },
+                                        dataType: 'json',
+
+                                        success: function(datas) {
+                                            if(datas.status == "ok") {
+                                                $('.moon').fadeOut();
+                                                $('.moon .spy').html("");
+                                                $('.jobber' + localStorage.timesheetid).remove();
+                                            }
+
+                                            else {}
+                                        }
+
+
+                                    });
+                               });
+
+
+
+
+
+
+  
+
+            
+
+
+
+
+            $('.accept').click(function() {
+
+                  var jobtitle = $('.jobtitle').val();
+                  var date = $('.date').val();
+                  var time_in = $('.time_in').val();
+                  var time_out = $('.time_out').val();
+                  var break_hrs = $('.break_hrs').val();
+                  var break_mins = $('.break_mins').val();
+                  var cEmail = $('.cEmail').val();
+                  var eEmail = $('.eEmail').val();
+                  var cName = $('.cName').val();
+                  var eName = $('.eName').val();
+                  var ePosition = $('.ePosition').val();
+
+
+
+
+                  if(jobtitle != "" && date != "" && eEmail != "") {
+
+                        $('.accept').html("SUBMITTING...");
+
+                        $.ajax({
+                            url: 'http://dotgroupltd.com/dot/v1/timesheet?token=' + localStorage.userToken,
+                            type: 'post',
+                            data: {
+                                job: jobtitle,
+                                date: date,
+                                time_in: time_in,
+                                time_out: time_out,
+                                break_hrs: break_hrs,
+                                break_mins: break_mins,
+                                cEmail: cEmail,
+                                eEmail: eEmail,
+                                cName: cName,
+                                eName: eName,
+                                ePosition: ePosition
+                            },
+                            headers: {
+                                device: "app",   //If your header name has spaces or any other char not appropriate
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+
+                              console.log(data);
+
+
+                                  if(data.status == "ok") {
+                                       $('.accept').html("SUBMIT TIMESHEET");
+                                       $('input').val("");
+                                       $('select').val("");
+
+                                       setTimeout(function() {
+                                            $('.star').fadeOut();
+
+                                       }, 3000);
+                                  }
+
+
+                            }
+
+
+                        });
+
+
+                  }
+
+            });
+
+
+
+
+
+             $.ajax({
+                  url: 'http://dotgroupltd.com/dot/v1/jobs/accepted/view?token=' + localStorage.userToken,
+                  type: 'get',
+                  data: {
+                      
+                  },
+                  headers: {
+                      device: "app",   //If your header name has spaces or any other char not appropriate
+                  },
+                  dataType: 'json',
+                  success: function (data) {
+                  
+
+                      if(data.status == "ok") {
+
+                          $.each(data.data.jobs, function (i, item) {
+                               
+                               $('.jobtitle').append("<option value='" + item.title + "'>" + item.title + "</option>");
+                          }); 
+
+
+
+                      }
+
+                      
+                  }
+              });
+
+
+
+
+
+                           
+         
+
+              
+
+
+
+
+
+
+
+      });
+  </script>
+
+
+
+  <style type="text/css">
+      
+      .top {
+         float: left;
+         width: 90%;
+         margin-left: 5%;
+         font-size: 15px;
+         font-weight: bold;
+         color: #2b60b5;
+         box-sizing: border-box;
+         margin-top: 20px;
+      }
+      .deli {
+         float: left;
+         width: 90%;
+         margin-left: 5%;
+         font-size: 22px;
+         box-sizing: border-box;
+         margin-top: 3px;
+      }
+     .job {
+        float: left;
+        margin-bottom: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 5px;
+        color: #2b60b5;
+        background: rgba(255, 255, 255, 0.7);
+
+     }
+     .job sup {
+       float: left;
+       width: 100%;
+       font-style: italic;
+       font-size: 13px;
+       margin-top: 5px;
+       box-sizing: border-box;
+       padding-left: 20px;
+       margin-bottom: 8px;
+     }
+     .jobTitle {
+        float: left;
+        width: 80%;
+        font-size: 18px;
+        font-weight: bold;
+       padding-left: 20px;
+       box-sizing: border-box;
+       padding-top: 8px;
+
+     }
+     .jobDetails {
+       float: left;
+       width: 20%;
+       text-align: center;
+       box-sizing: border-box;
+
+     }
+     .jobDetails i {
+        font-size: 25px;
+        color: #2b60b5;
+        margin-top: 5px;
+
+     }
+
+     .tail {
+       float: left;
+       box-sizing: border-box;
+       width: 16.6%;
+       border-right: 2px solid #ccc;
+       background: #fff;
+     }
+     
+     .bin {
+       float: left;
+       width: 100%;
+       padding: 10px;
+       text-align: center;
+       font-size: 19px;
+       border-bottom: 2px solid #ccc;
+       box-sizing: border-box;
+     }
+     .addjob {
+       border-radius: 50%;
+       -webkit-border-radius: 50%;
+     }
+  </style>
+</html>
+
+

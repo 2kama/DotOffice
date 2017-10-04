@@ -1,0 +1,412 @@
+@font-face {
+    font-family: 'hobo';
+    src: url('../font/AlegreyaSans-Regular.ttf');
+
+}
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../iconfont/MaterialIcons-Regular.eot); /* For IE6-8 */
+  src: local('Material Icons'),
+       local('MaterialIcons-Regular'),
+       url(../iconfont/MaterialIcons-Regular.woff2) format('woff2'),
+       url(../iconfont/MaterialIcons-Regular.woff) format('woff'),
+       url(../iconfont/MaterialIcons-Regular.ttf) format('truetype');
+}
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Prefer#c0392b icon size */
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+html, body {
+  padding: 0;
+  margin: 0;
+  font-family: 'hobo';
+  tab-highlight-color: rgba(0,0,0,0);
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	-o-tab-highlight-color: rgba(0,0,0,0);
+	-moz-tab-highlight-color: rgba(0,0,0,0);
+	-ms-tab-highlight-color: rgba(0,0,0,0);
+	width: 100%;
+  overflow-x: hidden;
+  -webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+-o-user-select: none;
+
+}
+a, a:active, a:hover, a:visited {
+  text-decoration: none;
+  color: #222;
+}
+
+input:focus, button:focus, button:active, textarea:focus {
+    outline: none;
+}
+body {
+  background: #2b60b5;
+  color: #fff;
+  font-size: 13px;
+}
+
+
+span.sup {
+        float: left;
+        padding: 4px;
+        background: red;
+        color: #fff;
+        margin-left: 30px;
+        -webkit-border-radius: 50%;
+        width: 10px;
+        height: 14px;
+        position: absolute;
+
+     }
+
+
+.welcomeScreen {
+          position: fixed;
+          top: 0;
+          height: 100%;
+          width: 100%;
+          box-sizing: border-box;
+          float: left;
+      }
+      .welcome {
+          height: 100%;
+          width: : 100%;
+          float: left;
+          box-sizing: border-box;
+      }
+
+      .loginPanel {
+          display: none;
+          float: left;
+          width: 100%;
+          height: 100%;
+          position: fixed;
+          top: 0px;
+          box-sizing: border-box;
+      }
+
+      .loginFloat {
+          float: left;
+          width: 90%;
+          margin-left: 5%;
+          
+          box-sizing: border-box;
+          padding: 10px;
+      }
+      .loginFloat sup {
+          font-size: 17px;
+      }
+      .loginPanel span {
+          width: 100%;
+          float: left;
+          text-align: center;
+          font-size: 22px;
+          margin-bottom: 10px;
+          margin-top: 150px;
+      }
+      .loginFloat input, .loginFloat select {
+          width: 100%;
+          box-sizing: border-box;
+          padding: 5px;
+          padding-left: 15px;
+          height: 45px;
+          font-size: 15px;
+          background: #fff;
+          border: 1px solid #eee;
+          margin-bottom: 10px;
+      }
+      textarea {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 5px;
+        height: 250px;
+        font-size: 15px;
+        background: #fff;
+        border: 1px solid #eee;
+        margin-bottom: 10px;
+          border-radius: 15px;
+          -webkit-border-radius: 15px;
+
+      }
+      button.loginBtn {
+          width: 100%;
+          box-sizing: border-box;
+          padding: 5px;
+          height: 45px;
+          font-size: 15px;
+          background: #2b60b5;
+          color: #fff;
+          border: 0px solid transparent;
+          font-weight: bold;
+      }
+      .errorMsg {
+         float: left;
+         margin-top: 10px;
+         background: pink;
+         color: red;
+         box-sizing: border-box;
+         padding: 10px;
+         font-size: 15px;
+         text-align: center;
+         display: none;
+         width: 100%;
+          border-radius: 15px;
+          -webkit-border-radius: 15px;
+      }
+      .successMsg {
+          float: left;
+         margin-top: 10px;
+         background: green;
+         color: #fff;
+         box-sizing: border-box;
+         padding: 10px;
+         font-size: 15px;
+         text-align: center;
+         display: none;
+         width: 100%;
+          border-radius: 15px;
+          -webkit-border-radius: 15px;
+      }
+
+
+      header {
+             box-sizing: border-box;
+             width: 100%;
+             height: 50px;
+             background: #2b60b5;
+             color: #fff;
+             float: left;
+             position: fixed;
+             z-index: 10;
+          }
+
+          .open_drawer_panel, .open_message {
+              
+              width: 50px;
+              height: 50px;
+              box-sizing: border-box;
+              padding: 5px;
+          }
+          .open_drawer_panel {
+              float: left;
+          }
+          .open_message {
+              float: right;
+          }
+          .open_message i, .open_drawer_panel i {
+             
+             font-size: 40px;
+             color: #fff;
+          }
+          .open_message sup {
+              position: absolute;
+              width: 15px;
+              height: 15px;
+              background: red;
+              text-align: center;
+              font-size: 15px;
+              color: #fff;
+              border-radius: 50%;
+              -webkit-border-radius: 50%;
+              margin-left: -13px;
+              font-weight: bold;
+              padding-bottom: 4px;
+          }
+          .drawer, .star, .moon {
+             float: left;
+             width: 100%;
+             height: 100%;
+             overflow-y: auto;
+             background: rgba(255, 255, 255, 0.9);
+             color: #444;
+             box-sizing: border-box;
+             padding: 10px;
+             position: fixed;
+             z-index: 20;
+             display: none;
+          }
+          .star {
+             background: #2b60b5;
+          }
+          .star {
+             z-index: 21;
+          }
+          .moon {
+             background: #2b60b5;
+          }
+
+          .ex, .pi, .qu {
+              float: left;
+              width: 100%;
+              height: 60px;
+              text-align: center;
+              font-size: 40px;
+              color: #fff;
+          }
+         
+          .profileName {
+             margin-top: 10px;
+             font-size: 16px;
+             width: 100%;
+             text-align: center;
+             float: left;
+          }
+
+          .menu {
+            float: left;
+            width: 100%;
+            margin-top: 20px;
+          }
+          .tab {
+             float: left;
+             width: 100%;
+             margin-bottom: 30px;
+             font-size: 30px;
+             text-align: center;
+          }
+          .tab a {
+              color: #444;
+              text-decoration: none;
+          }
+
+
+
+          .lit {
+       float: left;
+       width: 100%;
+       padding: 10px;
+       padding-top: 70px;
+       box-sizing: border-box;
+
+     }
+     .msgbox {
+        float: left;
+        box-sizing: border-box;
+        margin-top: 10px;
+        width: 100%;
+        padding: 4px 7% 4px 7%;
+        border-bottom: 2px solid #ddd;
+     }
+     .sender {
+        font-weight: bold;
+        font-size: 17px;
+        float: left;
+        width: 100%;
+        margin-bottom: 3px;
+     }
+     .msg {
+        font-size: 15px;
+        float: left;
+        width: 100%;
+        margin-bottom: 3px;
+     }
+     .msgTime {
+       font-size: 14px;
+       font-weight: bold;
+       color: #2b60b5;
+       width: 100%;
+       text-align: right;
+     }
+     span.topic {
+       float: left;
+       width: 100%;
+       text-align: center;
+       font-weight: bold;
+       font-size: 20px;
+       margin-bottom: 20px;
+       color: #fff;
+     }
+
+
+button.float {
+  float: right;
+  right: 20px;
+  bottom: 20px;
+  position: fixed;
+  background: #2b60b5 !important;
+  width: 50px;
+  height: 50px;
+  box-sizing: border-box;
+  border: 0px solid transparent;
+  z-index: 5;
+}
+button.float i {
+   font-size: 35px;
+   font-weight: bold;
+   margin-top: 3px;
+   color: #fff;
+}
+
+
+
+.loading {
+        float: left;
+        position: fixed;
+        top: 0px;
+        z-index: 1000;
+        width: 100%;
+        height: 100vh;
+        background: #fff;
+     }
+.loader {
+   width: 100px;
+   height: 100px;
+   margin: auto;
+   background: #fff;
+   border-radius: 50%;
+  -webkit-border-radius: 50%;
+  margin-top: 250px;
+  border: 10px solid #444;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

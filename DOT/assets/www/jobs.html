@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+
+
+  </head>
+  <body>
+
+
+      <div class="loading">
+         <div class="loader"></div>
+      </div>
+
+
+
+
+      <header>
+          <div class="open_drawer_panel"><i class="material-icons">menu</i></div>
+          <div class="open_message"><span class="sup">0</span><i class="material-icons">email</i></div>
+      </header>
+
+      
+
+      <div class="drawer">
+          <i class="material-icons ex">close</i>
+          <div class="profileName"></div>
+
+          <div class="menu">
+              <div class="tab"><a href="home.html">Dashboard</a></div>
+              <div class="tab"><a href="timesheet.html">TimeSheets</a></div>
+              <div class="tab"><a href="jobs.html">Jobs</a></div>
+              <div class="tab"><a href="payroll.html">PayRoll</a></div>
+              <div class="tab"><a href="updatepassword.html">Update Password</a></div>
+              <div class="tab logout"><a href="">Logout</a></div>
+          </div>
+      </div>
+
+
+
+      <div class="moon">
+         <i class="material-icons qu">close</i>
+         <span class="topic">Add a New Job</span>
+      </div>
+
+
+      <div class="star">
+         <i class="material-icons pi">close</i>
+
+         <div class='spy'></div>
+
+         <button style='background:red;margin-top:20px;' class='loginBtn decline'>DROP JOB</button>
+         <button style='background:green;margin-top:20px;' class='loginBtn accept'>ACCEPT JOB</button>
+      </div>
+
+
+
+      
+
+
+
+      
+
+
+
+      <section class="lit">
+        <span class="topic">Your Current Jobs</span>
+
+      </section>
+
+
+      <button class="float addjob"> <span class="sup1">0</span><i class="material-icons">add</i></button>
+
+
+      <script type="text/javascript" src="js/activity.js"></script>
+      <script type="text/javascript" src="js/smug.js"></script>
+      <script type="text/javascript" src="js/background.js"></script>
+
+  </body>
+
+
+  
+
+  <script type="text/javascript">
+      $(document).ready(function() {
+          if(localStorage.dotUserID == null || localStorage.dotUserID == "" || localStorage.dotUserID == undefined) {
+               setTimeout("location.href = 'index.html';", 1000);
+          }
+          else {
+             
+          }
+
+
+
+                           
+         
+
+              $.ajax({
+                  url: 'http://dotgroupltd.com/dot/v1/jobs/accepted/view?token=' + localStorage.userToken,
+                  type: 'get',
+                  data: {
+                      
+                  },
+                  headers: {
+                      device: "app",   //If your header name has spaces or any other char not appropriate
+                  },
+                  dataType: 'json',
+                  success: function (data) {
+                      console.log(data);
+
+                      if(data.status == "ok") {
+
+                          $.each(data.data.jobs, function (i, item) {
+                               $('.lit').append("<div class='job jobber" + item.id + "'><div class='jobTitle'><i class='material-icons'>trending_up</i><span class='jname'>" + item.title + "</span></div><div class='jobDetails job" + item.id + "'><i class='material-icons'>close</i></div><div class='super'><i class='material-icons'>home</i> <span>" +  item.company + "</span></div></div>");
+
+                               $('.loading').fadeOut();
+
+                               $('.job' + item.id).click(function() {
+                                  $('.star').fadeIn();
+                                  localStorage.jobid = item.id;
+
+                                  $('.spy').append("<span class='topic'><br><br><br>Are you sure you want to drop this job?</div>");
+                                 
+                                  $('.decline').show();
+                                  $('.accept').hide();
+                                  
+                               });
+
+
+                               
+                          }); 
+
+
+
+                      }
+
+                      
+                  }
+              });
+
+
+
+
+
+                      $('.decline').click(function() {
+
+                                    $(this).html("...");
+
+
+                                    $.ajax({
+                                        url: 'http://dotgroupltd.com/dot/v1/jobs/decline/' + localStorage.jobid + '?token=' + localStorage.userToken,
+                                        type: 'get',
+                                        data: {
+                                            
+                                        },
+                                        headers: {
+                                            device: "app",   //If your header name has spaces or any other char not appropriate
+                                        },
+                                        dataType: 'json',
+
+                                        success: function(datas) {
+                                            if(datas.status == "ok") {
+                                                $('.star').fadeOut();
+                                                $('.spy').html("");
+                                                $('.jobber' + localStorage.jobid).remove();
+                                                $('.decline').html("DROP JOB");
+                                            }
+
+                                            else {
+                                              $('.decline').html("DROP JOB");
+                                            }
+
+                                            
+                                        }
+
+
+                                    });
+                               });
+
+
+
+
+
+
+
+
+
+
+
+              $.ajax({
+                  url: 'http://dotgroupltd.com/dot/v1/jobs/all?token=' + localStorage.userToken,
+                  type: 'get',
+                  data: {
+                      
+                  },
+                  headers: {
+                      device: "app",   //If your header name has spaces or any other char not appropriate
+                  },
+                  dataType: 'json',
+                  success: function (data) {
+                      console.log(data);
+
+                      if(data.status == "ok") {
+
+                        var num = 0;
+
+                          $.each(data.data.jobs, function (i, item) {
+
+                            
+
+                            if(item.accepted_by == "") {
+                              var str = item.created_at;
+                                var res = str.split("-");
+
+
+                                if(res[1] == "01") {
+                                    var mons = "Jan";
+                                }
+                                else if(res[1] == "02") {
+                                    var mons = "Feb";
+                                }
+                                else if(res[1] == "03") {
+                                    var mons = "Mar";
+                                }
+                                else if(res[1] == "04") {
+                                    var mons = "Apr";
+                                }
+                                else if(res[1] == "05") {
+                                    var mons = "May";
+                                }
+                                else if(res[1] == "06") {
+                                    var mons = "Jun";
+                                }
+                                else if(res[1] == "07") {
+                                    var mons = "Jly";
+                                }
+                                else if(res[1] == "08") {
+                                    var mons = "Aug";
+                                }
+                                else if(res[1] == "09") {
+                                    var mons = "Sep";
+                                }
+                                else if(res[1] == "10") {
+                                    var mons = "Oct";
+                                }
+                                else if(res[1] == "11") {
+                                    var mons = "Nov";
+                                }
+                                else {
+                                    var mons = "Dec";
+                                }
+
+
+                                var stag = res[2].split(" ");
+
+
+                                $('.moon').append("<div class='job jobber" + item.id + "'><div class='calendar'><div class='day'>" + stag[0] + "</div><div class='month'>" + mons + "</div></div><div class='jobTitles'>" + item.title + "</div></div>");
+
+                               $('.jobber' + item.id).click(function() {
+                                  $('.star').fadeIn();
+                                  localStorage.jobid = item.id;
+
+                                  $('.spy').append("<span class='topic'>Job Details</div>");
+                                  $('.spy').append("<div class='top'>Company Name</div><div class='deli'>" + item.company + "</div>");
+                                  $('.spy').append("<div class='top'>Job Title</div><div class='deli'>" + item.title + "</div>");
+                                  $('.spy').append("<div class='top'>Job Description</div><div class='deli'>" + item.description + "</div>");
+                                  $('.spy').append("<div class='top'>Working Hours</div><div class='deli'>" + item.frm + " - " + item.too + "</div>");
+                                  $('.accept').show();
+                                  $('.decline').hide();
+
+
+
+
+                               });
+                                num++;
+                                $('span.sup1').html(num);
+
+                            }
+                            else {
+
+                            }
+                               
+
+
+                               
+                          }); 
+
+
+
+                      }
+
+                      
+                  }
+              });
+
+
+
+
+
+                      $('.accept').click(function() {
+
+                                    $(this).html("...");
+
+
+                                    $.ajax({
+                                        url: 'http://dotgroupltd.com/dot/v1/availability/' + localStorage.jobid + '?token=' + localStorage.userToken,
+                                        type: 'get',
+                                        data: {
+                                            
+                                        },
+                                        headers: {
+                                            device: "app",   //If your header name has spaces or any other char not appropriate
+                                        },
+                                        dataType: 'json',
+
+                                        success: function(datas) {
+                                            if(datas.status == "ok") {
+                                                $('.star').fadeOut();
+                                                $('.spy').html("");
+                                                $('.jobber' + localStorage.jobid).remove();
+                                                $('.accept').html("ACCEPT JOB");
+                                            }
+
+                                            else {
+                                              $('.accept').html("ACCEPT JOB");
+                                            }
+
+
+                                            
+                                        }
+
+
+                                    });
+                               });
+
+
+
+      });
+  </script>
+
+
+
+  <style type="text/css">
+      .top {
+         float: left;
+         width: 90%;
+         margin-left: 5%;
+         font-size: 15px;
+         font-weight: bold;
+         color: #fff;
+         box-sizing: border-box;
+         margin-top: 20px;
+      }
+      .deli {
+         float: left;
+         width: 90%;
+         margin-left: 5%;
+         font-size: 22px;
+         box-sizing: border-box;
+         margin-top: 3px;
+         color: #fff;
+      }
+     .job {
+        float: left;
+        margin-bottom: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 5px;
+        background: rgba(255, 255, 255, 0.7);
+        -webkit-border-radius: 5px;
+
+     }
+     .job .super {
+       float: left;
+       width: 100%;
+       font-style: italic;
+       font-size: 16px;
+       margin-top: 5px;
+       box-sizing: border-box;
+       padding-left: 20px;
+       margin-bottom: 8px;
+
+     }
+     .super i {
+       float: left;
+       padding-right: 10px;
+       size: 16px;
+       color: #2b60b5;
+     }
+     .super span {
+        float: left;
+        margin-top: 7px;
+     }
+     .jobTitle {
+        float: left;
+        width: 80%;
+        font-size: 22px;
+        font-weight: bold;
+       padding-left: 20px;
+       box-sizing: border-box;
+       padding-top: 8px;
+
+     }
+     .calendar {
+        float: left;
+        width: 50px;
+        border: 2px solid #2b60b5;
+        -webkit-border-radius: 7px;
+
+     }
+     .day {
+        float: left;
+        width: 100%;
+        text-align: center;
+        font-size: 22px;
+        color: #2b60b5;
+        font-weight: bold;
+     }
+     .month {
+       float: left;
+       width: 100%;
+       text-align: center;
+       font-size: 13px;
+       background: #2b60b5;
+       color: rgba(255, 255, 255, 0.7);
+       -webkit-border-bottom-left-radius: 5px;
+       -webkit-border-bottom-right-radius: 5px;
+       border: 0px;
+     }
+     .jobTitles {
+        float: left;
+        font-size: 22px;
+        font-weight: bold;
+       padding-top: 8px;
+       color: #fff;
+       padding-left: 10px;
+     }
+     .jobTitle i {
+        color: #2b60b5;
+        float: left;
+        width: 15%;
+        box-sizing: border-box;
+     }
+     .jobTitle .jname {
+        float: left;
+        width: 85%;
+        box-sizing: border-box;
+        padding-left: 10px;
+     }
+     .jobDetails {
+       float: left;
+       width: 20%;
+       text-align: center;
+       box-sizing: border-box;
+
+     }
+     .jobDetails i {
+        font-size: 25px;
+        color: #2b60b5;
+        margin-top: 5px;
+
+     }
+     .accept, .decline {
+       display: none;
+       -webkit-border-radius: 25px;
+     }
+     .addjob {
+       border-radius: 50%;
+       -webkit-border-radius: 50%;
+     }
+     
+     span.sup1 {
+        float: left;
+        padding: 4px;
+        background: red;
+        color: #fff;
+        margin-left: 30px;
+        -webkit-border-radius: 50%;
+        width: 10px;
+        height: 10px;
+        position: absolute;
+
+     }
+
+  </style>
+</html>
+
+

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+
+
+  </head>
+  <body>
+
+    <div class="loading">
+         <div class="loader"></div>
+      </div>
+
+
+      <header>
+          <div class="open_drawer_panel"><i class="material-icons">menu</i></div>
+          <div class="open_message"> <span class="sup">0</span><i class="material-icons">email</i></div>
+      </header>
+
+      
+
+      <div class="drawer">
+          <i class="material-icons ex">close</i>
+          <div class="profileName"></div>
+
+          <div class="menu">
+              <div class="tab"><a href="home.html">Dashboard</a></div>
+              <div class="tab"><a href="timesheet.html">TimeSheets</a></div>
+              <div class="tab"><a href="jobs.html">Jobs</a></div>
+              <div class="tab"><a href="payroll.html">PayRoll</a></div>
+              <div class="tab"><a href="updatepassword.html">Update Password</a></div>
+              <div class="tab logout"><a href="">Logout</a></div>
+          </div>
+      </div>
+
+
+
+      
+
+
+
+      <section class="lit">
+         <span class="topic">INBOX</span>
+      </section>
+
+
+      <button class="float addMsg"><i class="material-icons">send</i></button>
+
+
+      <script type="text/javascript" src="js/activity.js"></script>
+      <script type="text/javascript" src="js/background.js"></script>
+
+  </body>
+
+
+  
+
+  <script type="text/javascript">
+      $(document).ready(function() {
+          if(localStorage.dotUserID == null || localStorage.dotUserID == "" || localStorage.dotUserID == undefined) {
+               setTimeout("location.href = 'index.html';", 1000);
+          }
+          else {
+             
+          }
+  
+
+
+                           
+         
+
+              $.ajax({
+                  url: 'http://dotgroupltd.com/dot/v1/inbox?token=' + localStorage.userToken,
+                  type: 'get',
+                  data: {
+                      
+                  },
+                  headers: {
+                      device: "app",   //If your header name has spaces or any other char not appropriate
+                  },
+                  dataType: 'json',
+                  success: function (data) {
+                      console.log(data);
+
+                      $('.loading').hide();
+
+                      if(data.status == "ok") {
+
+                          var counte = 0;
+
+                         $.each(data.data.messages, function (i, item) {
+                              $('.lit').append("<div class='msgbox'><div class='sender'>" + item.sender + "</div><div class='msg'>" + item.message + "</div><div class='msgTime'>" + item.created_at + "</div></div>")
+                              counte++;
+
+
+                              localStorage.msgcount = counte;
+
+                          });
+
+
+
+
+
+
+
+                      }
+
+                      
+                  }
+              });
+
+
+
+
+              $('.addMsg').click(function() {
+                  setTimeout("location.href='sendmessage.html';", 0000);
+              });
+
+      });
+  </script>
+
+
+
+  <style type="text/css">
+     .addMsg {
+       border-radius: 50%;
+       -webkit-border-radius: 50%;
+     }
+
+  </style>
+</html>
+
+

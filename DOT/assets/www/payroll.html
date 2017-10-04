@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+
+
+  </head>
+  <body>
+
+      <div class="loading">
+         <div class="loader"></div>
+      </div>
+
+
+      <header>
+          <div class="open_drawer_panel"><i class="material-icons">menu</i></div>
+          <div class="open_message"><span class="sup">0</span><i class="material-icons">email</i></div>
+      </header>
+
+      
+
+      <div class="drawer">
+          <i class="material-icons ex">close</i>
+          <div class="profileName"></div>
+
+          <div class="menu">
+             <div class="tab"><a href="home.html">Dashboard</a></div>
+              <div class="tab"><a href="timesheet.html">TimeSheets</a></div>
+              <div class="tab"><a href="jobs.html">Jobs</a></div>
+              <div class="tab"><a href="payroll.html">PayRoll</a></div>
+              <div class="tab"><a href="updatepassword.html">Update Password</a></div>
+              <div class="tab logout"><a href="">Logout</a></div>
+          </div>
+      </div>
+
+
+
+      
+
+
+
+      <section class="lit">
+         <span class="topic">PAYROLLS</span>
+      </section>
+
+
+      <script type="text/javascript" src="js/activity.js"></script>
+      <script type="text/javascript" src="js/smug.js"></script>
+      <script type="text/javascript" src="js/background.js"></script>
+
+  </body>
+
+
+  
+
+  <script type="text/javascript">
+      $(document).ready(function() {
+          if(localStorage.dotUserID == null || localStorage.dotUserID == "" || localStorage.dotUserID == undefined) {
+               setTimeout("location.href = 'index.html';", 1000);
+          }
+          else {
+             
+          }
+
+
+
+
+                           
+         
+
+              $.ajax({
+                  url: 'http://dotgroupltd.com/dot/v1/payrolls/view?token=' + localStorage.userToken,
+                  type: 'get',
+                  data: {
+                      
+                  },
+                  headers: {
+                      device: "app",   //If your header name has spaces or any other char not appropriate
+                  },
+                  dataType: 'json',
+                  success: function (data) {
+                      console.log(data);
+
+                      $('.loading').hide();
+
+                      if(data.status == "ok") {
+
+                          $.each(data.data.payrolls, function (i, item) {
+                               $('.lit').append("<div class='pod'><div class='amt'>&pound;" + item.net_pay + "</div><div class='pic'><a href='" + item.payroll + "'><i class='material-icons'>cloud_download</i></a><div></div>");
+                          });
+
+
+
+                      }
+
+                      
+                  }
+              });
+
+
+
+      });
+  </script>
+
+
+
+  <style type="text/css">
+     .pod {
+        float: left;
+        width: 100%;
+        margin-top: 10px;
+        box-sizing: border-box;
+        border-bottom: 1px solid #ddd;
+        background: rgba(255, 255, 255, 0.7);
+        padding-top: 10px;
+        color: #2b60b5;
+     }
+     .amt, .pic {
+        float: left;
+        font-size: 20px;
+        width: 50%;
+        box-sizing: border-box;
+        padding: 10px;
+        font-weight: bold;
+        text-align: center;
+     }
+     .amt {
+       padding-left: 20px;
+       text-align: left;
+     }
+     .pic a{
+        text-decoration: none;
+        color: #2b60b5;
+
+     }
+     .pic a i {
+       font-size: 40px;
+       margin-top: -7px;
+     }
+
+  </style>
+</html>
+
+
